@@ -1,6 +1,5 @@
 # Sistema de Gestión de Citas y Pagos para Psicólogos
-![Java](https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg)
-![MySQL](https://upload.wikimedia.org/wikipedia/en/d/dd/MySQL_logo.svg)
+
 
 ## Descripción del Proyecto
 
