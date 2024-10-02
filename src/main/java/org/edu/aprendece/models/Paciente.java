@@ -20,7 +20,7 @@ public class Paciente implements Serializable {
 
     @Id
     @Column(name = "dpi_usuario")
-    private Long dpi_usuarioe;
+    private Long dpi_usuario;
     @Column(name = "nombre_usuario")
     private String nombre_usuario;
     @Column(name = "edad_usuario")

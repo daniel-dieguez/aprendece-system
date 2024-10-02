@@ -20,8 +20,8 @@ public class PacienteService implements IPacienteImpl {
     }
 
     @Override
-    public Paciente findById(Long dpi_paciente) {
-        return this.iPacienteReposi.findById(String.valueOf(dpi_paciente)).orElse(null);
+    public Paciente findById(Long dpi_usuario) {
+        return this.iPacienteReposi.findById(dpi_usuario).orElse(null);
     }
 
     @Override
