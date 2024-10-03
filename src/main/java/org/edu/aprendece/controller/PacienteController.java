@@ -2,16 +2,15 @@ package org.edu.aprendece.controller;
 
 
 import jakarta.validation.Valid;
-import jakarta.websocket.OnClose;
 import org.edu.aprendece.dao.IPacienteReposi;
 import org.edu.aprendece.dao.service.PacienteService;
-import org.edu.aprendece.models.Paciente;
+import org.edu.aprendece.models.Agendar;
 import org.edu.aprendece.models.dto.PacienteDTO;
+import org.edu.aprendece.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.Repository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.CannotCreateTransactionException;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/paciente")
@@ -32,110 +30,105 @@ public class PacienteController {
     @Autowired
     private PacienteService pacienteService;
 
-    private Logger logger = LoggerFactory.getLogger(Paciente.class);
+    @Autowired
+    private Utils utils;
+
+    private Logger logger = LoggerFactory.getLogger(Agendar.class);
 
     @GetMapping("/AllPacientes")
     public ResponseEntity<?> findAll() {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
         try {
-            List<Paciente> pacientes = pacienteService.findAll();
+            List<Agendar> agendars = pacienteService.findAll();
             logger.info("se a realizado consulta");
-            return new ResponseEntity<List<Paciente>>(pacientes, HttpStatus.OK);
+            return new ResponseEntity<List<Agendar>>(agendars, HttpStatus.OK);
 
         } catch (CannotCreateTransactionException e) {
-            response = this.getTransactionExepcion(response, e);
+            response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
         } catch (DataAccessException e) {
-            response = this.getDataAccessException(response, e);
+            response = this.utils.getDataAccessException(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
 
         }
     }
 
-    @PostMapping("/newpaciente")
+    @PostMapping("/newPaciente")
     public ResponseEntity<?> newPaciente(@Valid @RequestBody PacienteDTO value) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Paciente newPaciente = new Paciente();
-            newPaciente.setDpi_usuario(value.getDpi_usuario());
-            newPaciente.setNombre_usuario(value.getNombre_usuario());
-            newPaciente.setEdad_usuario(value.getEdad_usuario());
-            newPaciente.setCorreo_usuario(value.getCorreo_usuario());
-            this.iPacienteReposi.save(newPaciente);
+            Agendar newAgendar = new Agendar();
+            newAgendar.setId_cita(value.getId_cita());
+            newAgendar.setFecha(value.getFecha());
+            newAgendar.setHora_cita(value.getHora_cita());
+            newAgendar.setDpi_usuario(value.getDpi_usuario());
+            newAgendar.setNombre_usuario(value.getNombre_usuario());
+            newAgendar.setNumero_usuario(value.getNumero_usuario());
+            newAgendar.setEdad_usuario(value.getEdad_usuario());
+            newAgendar.setCorreo_usuario(value.getCorreo_usuario());
+            this.iPacienteReposi.save(newAgendar);
             logger.info("se a realizado la creacion de un nuevo paciente");
             response.put("mensaje","se a realizado un nuevo paciente");
 
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-        } catch (CannotCreateTransactionException e) {
-            response = this.getTransactionExepcion(response, e);
+        }catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
         } catch (DataAccessException e) {
-            response = this.getDataAccessException(response, e);
+            response = this.utils.getDataAccessException(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
 
         }
     }
 
-    @PutMapping("/updatePaciente/{dpi_usuario}")
-    public ResponseEntity<?> updatePaciente(@Valid @RequestBody Paciente value, @PathVariable long dpi_usuario) {//directo al entity
+    @PutMapping("/actualizarCita/{id_cita}")
+    public ResponseEntity<?> updatePaciente(@Valid @RequestBody Agendar value, @PathVariable Integer id_cita) {//directo al entity
         Map<String, Object> response = new HashMap<>();
         try {
-            Paciente paciente = this.pacienteService.findById(dpi_usuario);
+            Agendar agendar = this.pacienteService.findById(id_cita);
 
-            paciente.setNombre_usuario(value.getNombre_usuario());
-            paciente.setEdad_usuario(value.getEdad_usuario());
-            paciente.setCorreo_usuario(value.getCorreo_usuario());
-            this.iPacienteReposi.save(paciente);
+            agendar.setFecha(value.getFecha());
+            agendar.setHora_cita(value.getHora_cita());
+            this.iPacienteReposi.save(agendar);
             logger.info("se a realizado la modificacion de un nuevo paciente");
             response.put("mensaje","se a realizado actualizacion de un paciente");
             return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 
         } catch (CannotCreateTransactionException e) {
-            response = this.getTransactionExepcion(response, e);
+            response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
         } catch (DataAccessException e) {
-            response = this.getDataAccessException(response, e);
+            response = this.utils.getDataAccessException(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
 
         }
     }
 
-    @DeleteMapping("/delete/{dpi_usuario}")
-    public ResponseEntity<?>delete(@PathVariable long dpi_usuario){
+
+
+    @DeleteMapping("/delete/{id_cita}")
+    public ResponseEntity<?>delete(@PathVariable Integer id_cita){
         Map<String, Object> response = new HashMap<>();
         try {
-            Paciente paciente = this.pacienteService.findById(dpi_usuario);
+            Agendar agendar = this.pacienteService.findById(id_cita);
 
-            this.pacienteService.delete(paciente);
+            this.pacienteService.delete(agendar);
             logger.info("Se a eliminado el paciente");
-            response.put("mensaje", "se a eliminado el paciente..".concat(paciente.getNombre_usuario()));
+            response.put("mensaje", "se a eliminado el paciente..".concat(agendar.getNombre_usuario()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
         } catch (CannotCreateTransactionException e) {
-            response = this.getTransactionExepcion(response, e);
+            response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
         } catch (DataAccessException e) {
-            response = this.getDataAccessException(response, e);
+            response = this.utils.getDataAccessException(response, e);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
 
         }
 
     }
 
-    private Map<String, Object> getTransactionExepcion(Map<String,Object> response, CannotCreateTransactionException e){
-        logger.error("Error al momento de conectarse a la base de datos");
-        response.put("mensajee", "error al moneotno de contectarse a la");
-        response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-        return response;
-    }
 
-    private Map<String, Object> getDataAccessException(Map<String, Object> response, DataAccessException e){
-        logger.error("El error al momento de ejecutar la consulta a la base d adatos");
-        response.put("mensaje", "Error al momenot de ejecutar ola consulta a la base de datos");
-        response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-        return response;
-
-    }
 
 
 }
