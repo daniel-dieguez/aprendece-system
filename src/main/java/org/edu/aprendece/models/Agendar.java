@@ -1,5 +1,6 @@
 package org.edu.aprendece.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,5 +35,9 @@ public class Agendar implements Serializable {
     private int edad_usuario;
     @Column(name = "correo_usuario")
     private String correo_usuario;
+
+
+    @Column(name = "monto_sesion")
+    private double monto_sesion;
 
 }
