@@ -2,9 +2,7 @@ package org.edu.citas.controller;
 
 
 import org.edu.citas.dao.service.NotasService;
-import org.edu.citas.dao.service.PersonaService;
-import org.edu.citas.models.NotasModel;
-import org.edu.citas.models.PersonaModel;
+import org.edu.citas.DTO.InotasDto;
 import org.edu.citas.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,29 +20,27 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/notas")
+@RequestMapping("/api/" + NotasController.PATH)
 public class NotasController {
 
-
-    @Autowired
-    private NotasService NotaService;
-
+    public static final String PATH = "notas";
     private Logger logger = LoggerFactory.getLogger(PersonaController.class);
 
     @Autowired
     private Utils utils;
+
     @Autowired
     private NotasService notasService;
 
-    @GetMapping("/pacientes")
-    public ResponseEntity<?> getAllPersonas() {
+    @GetMapping("/allnotas")
+    public ResponseEntity<?> getAllNotas() {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
 
         try {
-            List<NotasModel> notas = notasService.findAllNotas();
-            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", notas.size());
-            return new ResponseEntity<List<NotasModel>>(notas, HttpStatus.OK);
+            List<InotasDto> notas = notasService.AllNotas();
+            logger.info("Se ha realizado consulta correctamente, registros encontrados", notas.size());
+            return new ResponseEntity<List<InotasDto>>(notas, HttpStatus.OK);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);

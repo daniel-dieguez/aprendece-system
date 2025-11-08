@@ -1,7 +1,6 @@
 package org.edu.citas.dao.implement;
 
-import org.edu.citas.models.NotasModel;
-import org.edu.citas.models.PersonaModel;
+import org.edu.citas.Models.NotasModel;
 
 import java.util.List;
 

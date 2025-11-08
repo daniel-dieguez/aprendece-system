@@ -1,58 +1,45 @@
-package org.edu.citas.models;
+package org.edu.citas.Models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Usuario", schema = "adm")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonaModel implements Serializable {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @JsonFormat
     private Integer id;
 
-    @Column(name = "nombre")
     private String nombre;
-
-    @Column(name = "edad")
+    @JsonFormat
     private Integer edad;
-
-    @Column(name = "correo")
+    @JsonFormat
     private String correo;
-
-    @Column(name = "direccion")
+    @JsonFormat
     private String direccion;
-
-    @Column(name = "telefono")
+    @JsonFormat
     private String telefono;
-
-    @Column(name = "tipoUsuario")
+    @JsonFormat
     private Integer tipoUsuario;
-
-    @Column(name = "estado")
+    @JsonFormat
     private Integer estado;
-    
 
-
-
-    //@JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "creado")
+    // Si quieres formatear la fecha en el JSON:
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate creado;
 
-
-
-
 }
+//

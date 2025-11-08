@@ -1,7 +1,10 @@
 package org.edu.citas.controller;
 
-import org.edu.citas.dao.service.PersonaService;
+
+import org.edu.citas.DTO.ICitasDto;
+import org.edu.citas.Models.CitasModel;
 import org.edu.citas.Models.PersonaModel;
+import org.edu.citas.dao.service.CitasService;
 import org.edu.citas.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,28 +22,28 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/" + PersonaController.PATH)
-public class PersonaController {
+@RequestMapping("/api/" + CitasController.PATH)
+public class CitasController {
 
-    public static final String PATH = "personas";
+    public static final String PATH = "citas";
 
     @Autowired
-    private PersonaService personaService;
+    private CitasService citasService;
 
     private Logger logger = LoggerFactory.getLogger(PersonaController.class);
 
     @Autowired
     private Utils utils;
 
-    @GetMapping("/pacientes")
-    public ResponseEntity<?> getAllPersonas() {
-                Map<String, Object> response = new HashMap<>();
+    @GetMapping("/allCitas")
+    public ResponseEntity<?> getAllCitas() {
+        Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
 
         try {
-            List<PersonaModel> pacientes = personaService.AllPacientes();
-            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
-            return new ResponseEntity<List<PersonaModel>>(pacientes, HttpStatus.OK);
+            List<ICitasDto> citas = citasService.AllCitas();
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
+            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -51,4 +54,5 @@ public class PersonaController {
 
         }
     }
+
 }

@@ -1,36 +1,39 @@
-package org.edu.citas.models;
+package org.edu.citas.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "notas", schema = "adm")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotasModel  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @JsonFormat
     private int id;
 
-    @Column(name = "pacienteId")
-    private int pacienteId;
 
-    @Column(name = "nota")
+    @ManyToOne
+    @JoinColumn(name = "pacienteId")
+    private PersonaModel pacienteModel;
+
+    @JsonFormat
     private String nota;
 
-    @Column(name = "estado")
+    @JsonFormat
     private int estado;
 
-    @Column(name = "creado")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate creado;
+
 
 }
