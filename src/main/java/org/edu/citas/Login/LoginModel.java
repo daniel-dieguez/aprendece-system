@@ -3,6 +3,8 @@ package org.edu.citas.Login;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.edu.citas.Models.PersonaModel;
+import org.edu.citas.Models.TipoUsarioModel;
 
 @Entity
 @Table(name = "Login", schema = "adm")
@@ -15,6 +17,24 @@ public class LoginModel {
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "passwordHash")
+    private String passwordHash;
+
+//    @Column(name = "nombre")
+//    private String nombre;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "usuarioId")
+    private PersonaModel usuario;
+
+
+//
+//    @ManyToOne(fetch = FetchType.LAZY) // o EAGER si quieres cargar automáticamente
+//    @JoinColumn(name = "tipoUsuarioId")
+//    private TipoUsarioModel tipoUsarioModel;
+
+
 
     public LoginModel(Integer id, String username, String passwordHash) {
         this.id = id;
@@ -50,8 +70,7 @@ public class LoginModel {
         this.passwordHash = passwordHash;
     }
 
-    @Column(name = "passwordHash")
-    private String passwordHash;
+
 
 
 

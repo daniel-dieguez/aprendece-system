@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,17 +30,46 @@ public class CitasModel implements Serializable {
     @JoinColumn(name = "pacienteId")
     private PersonaModel pacienteModel;
 
-    @JsonFormat
-    private Date fechaCita;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime fechaCita;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate horaCitaInicio;
+    private LocalDateTime horaCitaInicio;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate horaCitaFin;
+    private LocalDateTime horaCitaFin;
 
     @JsonFormat
     private int estado;
 
+    private LocalDate creado;
 
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPacienteModel(PersonaModel pacienteModel) {
+        this.pacienteModel = pacienteModel;
+    }
+
+    public void setFechaCita(LocalDateTime fechaCita) {
+        this.fechaCita = fechaCita;
+    }
+
+    public void setHoraCitaInicio(LocalDateTime horaCitaInicio) {
+        this.horaCitaInicio = horaCitaInicio;
+    }
+
+    public void setHoraCitaFin(LocalDateTime horaCitaFin) {
+        this.horaCitaFin = horaCitaFin;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public void setCreado(LocalDate creado) {
+        this.creado = creado;
+    }
 }

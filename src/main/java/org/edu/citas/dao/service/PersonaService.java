@@ -6,13 +6,14 @@ import org.edu.citas.Models.PersonaModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class PersonaService implements IPersonaImpl {
 
     @Autowired
-    private IPersonaRepo repo;
+    private IPersonaRepo PersonaRepo;
 
     @Override
     public List<PersonaModel> findAllCitas() { // esta no sirve de nada
@@ -20,12 +21,14 @@ public class PersonaService implements IPersonaImpl {
     }
 
     public List<PersonaModel> AllPacientes() {
-        return this.repo.AllPacientes();
+        return this.PersonaRepo.AllPacientes();
     }
 
-//    public List<PersonaModel> findByDate(LocalDate fecha){
-//        return this.repo.findByDate(fecha);
-//    }
+
+    public PersonaModel crearPersona(PersonaModel persona) {
+        persona.setCreado(LocalDate.now());  // Establecer fecha actual (sin hora, solo fecha)
+        return PersonaRepo.save(persona);
+    }
 
 
 }

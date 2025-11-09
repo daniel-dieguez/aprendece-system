@@ -23,6 +23,11 @@ public class PersonaModel implements Serializable {
     @JsonFormat
     private Integer id;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @JsonFormat
     private String nombre;
     @JsonFormat
     private Integer edad;
@@ -32,14 +37,25 @@ public class PersonaModel implements Serializable {
     private String direccion;
     @JsonFormat
     private String telefono;
+
     @JsonFormat
     private Integer tipoUsuario;
+
     @JsonFormat
     private Integer estado;
 
     // Si quieres formatear la fecha en el JSON:
-    @JsonFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate creado;
+    public void setCreado(LocalDate creado) {
+        this.creado = creado;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tipoUsuario", insertable = false, updatable = false)
+    private TipoUsarioModel tipoUsuarios;
+
+
 
 }
 //

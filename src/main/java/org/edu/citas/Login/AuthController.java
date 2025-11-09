@@ -28,10 +28,17 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtils.generateToken(request.getUsername());
+//        String token = jwtUtils.generateToken(request.getName());
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        // Construir respuesta con username y token
+        JwtResponse jwtResponse = new JwtResponse(request.getUsername(),token);
+        JwtResponse jwtName = new JwtResponse(request.getUsername(),token);
+
+
+
+        return ResponseEntity.ok(jwtResponse);
     }
 }
 

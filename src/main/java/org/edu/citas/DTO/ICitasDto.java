@@ -2,12 +2,15 @@ package org.edu.citas.DTO;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface ICitasDto {
 
     Integer getIdUsuario();
-    LocalDate getInicioCita();
-    LocalDate getFinalCita();
+
+    LocalDate getfechaCita();
+    LocalDateTime gethoraCitaInicio();
+    LocalDateTime gethoraCitaFin();
     String getEstado ();
 
 

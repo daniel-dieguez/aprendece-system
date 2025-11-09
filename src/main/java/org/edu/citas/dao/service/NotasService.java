@@ -7,6 +7,7 @@ import org.edu.citas.DTO.InotasDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class NotasService implements INotasImpl {
 
     @Autowired
-    private INotaRepo NotaRepo;
+    private INotaRepo notaRepo;
 
 
     @Override
@@ -23,6 +24,12 @@ public class NotasService implements INotasImpl {
     }
 
     public List<InotasDto> AllNotas() {
-        return this.NotaRepo.AllNotas();
+        return this.notaRepo.AllNotas();
+    }
+
+    public NotasModel createNota(NotasModel notasModel) {
+        notasModel.setCreado(LocalDate.now());
+        return notaRepo.save(notasModel);
+
     }
 }
