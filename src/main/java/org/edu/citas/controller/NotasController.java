@@ -34,7 +34,7 @@ public class NotasController {
     @Autowired
     private NotasService notasService;
 
-    @GetMapping("/allnotas")
+    @GetMapping("/allNotas")
     public ResponseEntity<?> getAllNotas() {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");

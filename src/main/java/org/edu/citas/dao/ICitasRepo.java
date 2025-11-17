@@ -17,15 +17,17 @@ import java.util.List;
 public interface ICitasRepo extends JpaRepository<CitasModel, Integer> {
 
     @Query("""
-SELECT c.id as id,  
-c.pacienteModel.nombre as nombre
-, c.pacienteModel.id as idUsuario
-,c.fechaCita as fechaCita
-, c.horaCitaInicio as horaCitaInicio
-, c.horaCitaFin as horaCitaFin, 
-    c.estado as estado FROM CitasModel c
-    """)
+    SELECT 
+        c.pacienteModel.id AS idUsuario,
+        c.pacienteModel.nombre AS nombre,
+        c.fechaCita AS fechaCita,
+        c.horaCitaInicio AS horaCitaInicio,
+        c.horaCitaFin AS horaCitaFin,
+        c.estado AS estado
+    FROM CitasModel c
+""")
     List<ICitasDto> AllCitas();
+
 
 
     @Modifying

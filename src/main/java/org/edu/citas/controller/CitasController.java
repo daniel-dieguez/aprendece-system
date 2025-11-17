@@ -30,8 +30,6 @@ public class CitasController {
     @Autowired
     private CitasService citasService;
 
-//    public CitasCreateDto citasCreateDto;
-
     private Logger logger = LoggerFactory.getLogger(PersonaController.class);
 
     @Autowired
@@ -41,7 +39,6 @@ public class CitasController {
     public ResponseEntity<?> getAllCitas() {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
-
         try {
             List<ICitasDto> citas = citasService.AllCitas();
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());

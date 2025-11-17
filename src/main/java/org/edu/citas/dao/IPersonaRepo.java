@@ -18,14 +18,15 @@ public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO adm.Usuario (nombre, edad, correo, direccion, telefono, tipoUsuario, estado, creado) " +
-            "VALUES (:nombre, :edad, :correo, :direccion, :telefono, :tipoUsuario, 1, GETDATE())", nativeQuery = true)
+    @Query(value = "INSERT INTO adm.Usuario (nombre, edad, correo, direccion, telefono, tipoUsuario, motivo, estado, creado) " +
+            "VALUES (:nombre, :edad, :correo, :direccion, :telefono, :tipoUsuario, motivo,1, GETDATE())", nativeQuery = true)
     int insertarUsuario(
             @Param("nombre") String nombre,
             @Param("edad") Integer edad,
             @Param("correo") String correo,
             @Param("direccion") String direccion,
             @Param("telefono") String telefono,
-            @Param("tipoUsuario") Integer tipoUsuario);
+            @Param("tipoUsuario") Integer tipoUsuario,
+            @Param("motivo") String motivo);
 
 }

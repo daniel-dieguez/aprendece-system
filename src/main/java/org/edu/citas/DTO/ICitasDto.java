@@ -7,11 +7,9 @@ import java.time.LocalDateTime;
 public interface ICitasDto {
 
     Integer getIdUsuario();
-
-    LocalDate getfechaCita();
-    LocalDateTime gethoraCitaInicio();
-    LocalDateTime gethoraCitaFin();
-    String getEstado ();
-
-
+    String getNombre();
+    LocalDateTime getFechaCita();
+    LocalDateTime getHoraCitaInicio();
+    LocalDateTime getHoraCitaFin();
+    Integer getEstado();
 }

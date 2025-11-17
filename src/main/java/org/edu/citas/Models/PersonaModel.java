@@ -35,6 +35,9 @@ public class PersonaModel implements Serializable {
     private String correo;
     @JsonFormat
     private String direccion;
+
+    @JsonFormat
+    private String motivo;
     @JsonFormat
     private String telefono;
 
