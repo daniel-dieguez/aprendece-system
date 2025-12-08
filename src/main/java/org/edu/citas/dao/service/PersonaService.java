@@ -20,8 +20,18 @@ public class PersonaService implements IPersonaImpl {
         return List.of();
     }
 
-    public List<PersonaModel> AllPacientes() {
-        return this.PersonaRepo.AllPacientes();
+    public List<PersonaModel> AllPacientes( int anio) {
+        return this.PersonaRepo.AllPacientes(anio);
+    }
+public List<PersonaModel> pacientePormes( int anio, int mes) {
+        return this.PersonaRepo.pacientesPorAnioYMes(anio, mes);
+    }
+
+    public Long totalPacientesAnual( int anio) {
+        return this.PersonaRepo.totalPacientesAnual(anio);
+    }
+    public Long totalPacientesMensual( int anio, int mes) {
+        return this.PersonaRepo.totalPacientesMesual(anio, mes);
     }
 
 

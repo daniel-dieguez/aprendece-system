@@ -47,6 +47,12 @@ public class PersonaModel implements Serializable {
     @JsonFormat
     private Integer estado;
 
+    @JsonFormat
+    private Integer mes ;
+
+    @JsonFormat
+    private Integer anio;
+
     // Si quieres formatear la fecha en el JSON:
 //    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate creado;

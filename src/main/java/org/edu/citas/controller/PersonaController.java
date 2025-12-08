@@ -31,15 +31,74 @@ public class PersonaController {
     @Autowired
     private Utils utils;
 
-    @GetMapping("/pacientes")
-    public ResponseEntity<?> getAllPersonas() {
+    @GetMapping("/pacientes/{anio}")
+    public ResponseEntity<?> getAllPersonas(@PathVariable int anio) {
                 Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
 
         try {
-            List<PersonaModel> pacientes = personaService.AllPacientes();
+            List<PersonaModel> pacientes = personaService.AllPacientes(anio);
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
             return new ResponseEntity<List<PersonaModel>>(pacientes, HttpStatus.OK);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+    @GetMapping("/pacientes/{anio}/{mes}")
+    public ResponseEntity<?> getAllPersonasAnualYMensual(@PathVariable int anio, @PathVariable int mes) {
+                Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+
+        try {
+            List<PersonaModel> pacientes = personaService.pacientePormes(anio, mes);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
+            return new ResponseEntity<List<PersonaModel>>(pacientes, HttpStatus.OK);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+    @GetMapping("/totalPacientes/{anio}")
+    public ResponseEntity<?> totalAnuales(@PathVariable int anio) {
+                Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+
+        try {
+            Long pacientes = personaService.totalPacientesAnual(anio);
+            logger.info("Se ha realizado consulta correctamente, total encontrados: {}", pacientes);
+            return ResponseEntity.ok(pacientes);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+    @GetMapping("/totalMensual/{anio}/{mes}")
+    public ResponseEntity<?> totalMensualAnual(@PathVariable int anio, @PathVariable int mes) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+
+        try {
+           Long pacientes = personaService.totalPacientesMensual(anio, mes);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
+            return ResponseEntity.ok(pacientes);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);

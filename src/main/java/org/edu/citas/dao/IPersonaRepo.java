@@ -1,6 +1,7 @@
 package org.edu.citas.dao;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.java.Log;
 import org.edu.citas.Models.PersonaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,8 +14,44 @@ import java.util.List;
 @Repository
 public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
 
-    @Query("SELECT p FROM PersonaModel p WHERE p.estado = 1")
-    List<PersonaModel> AllPacientes();
+    @Query("""
+
+            SELECT p\s
+    FROM PersonaModel p
+    WHERE p.estado = 1
+      AND p.anio = :anio
+            """)
+    List<PersonaModel> AllPacientes(@Param("anio") int anio);
+
+    @Query("""
+
+            SELECT p\s
+    FROM PersonaModel p
+    WHERE p.estado = 1
+      AND p.anio = :anio
+      and p.mes = :mes
+            """)
+    List<PersonaModel> pacientesPorAnioYMes(@Param("anio") int anio, @Param("mes") int mes);
+
+    @Query("""
+
+            SELECT COUNT(p.id)
+            FROM PersonaModel p
+    WHERE p.estado = 1
+      AND p.anio = :anio
+     
+            """)
+    Long totalPacientesAnual(@Param("anio") int anio);
+
+    @Query("""
+
+            SELECT COUNT(p.id)
+            FROM PersonaModel p
+    WHERE p.estado = 1
+      AND p.anio = :anio
+      and p.mes = :mes
+            """)
+    Long totalPacientesMesual(@Param("anio") int anio, @Param("mes") int mes);
 
     @Modifying
     @Transactional
