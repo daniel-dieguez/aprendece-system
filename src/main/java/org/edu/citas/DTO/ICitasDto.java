@@ -12,4 +12,6 @@ public interface ICitasDto {
     LocalDateTime getHoraCitaInicio();
     LocalDateTime getHoraCitaFin();
     Integer getEstado();
+    Integer getAnio();
+    Integer getMes();
 }

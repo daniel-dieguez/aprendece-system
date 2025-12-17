@@ -74,7 +74,7 @@ public interface IMontoRepo extends JpaRepository <MontosModel, Integer>{
    and c.anio = :anio
    
 """)
-    Long TotalMensual(@Param("mes") int mes, @Param("anio") int anio);
+    Long TotalMensual( @Param("anio") int anio,@Param("mes") int mes );
 
     @Query("""
     SELECT SUM (c.monto)

@@ -23,17 +23,54 @@ public interface ICitasRepo extends JpaRepository<CitasModel, Integer> {
         c.fechaCita AS fechaCita,
         c.horaCitaInicio AS horaCitaInicio,
         c.horaCitaFin AS horaCitaFin,
-        c.estado AS estado
+        c.estado AS estado,
+        c.anio as anio,
+        c.mes as mes
+    
     FROM CitasModel c
+    WHERE c.anio = :anio
 """)
-    List<ICitasDto> AllCitas();
+    List<ICitasDto> AllCitas(@Param("anio") int anio);
+
+    @Query("""
+    SELECT 
+c.pacienteModel.id AS idUsuario,
+        c.pacienteModel.nombre AS nombre,
+        c.fechaCita AS fechaCita,
+        c.horaCitaInicio AS horaCitaInicio,
+        c.horaCitaFin AS horaCitaFin,
+        c.estado AS estado,
+        c.anio as anio,
+        c.mes as mes
+    FROM CitasModel c
+    WHERE c.anio = :anio
+    and c.mes = :mes 
+""")
+    List<ICitasDto> CitasMensuales(@Param("anio") int anio, @Param("mes") int mes);
+
+    @Query("""
+    SELECT 
+c.pacienteModel.id AS idUsuario,
+        c.pacienteModel.nombre AS nombre,
+        c.fechaCita AS fechaCita,
+        c.horaCitaInicio AS horaCitaInicio,
+        c.horaCitaFin AS horaCitaFin,
+        c.estado AS estado,
+        c.anio as anio,
+        c.mes as mes
+    FROM CitasModel c
+    WHERE c.anio = :anio
+    and c.mes = :mes 
+    and DAY(c.fechaCita) = :dia
+""")
+    List<ICitasDto> CitasDiarias(@Param("anio") int anio, @Param("mes") int mes, @Param("dia") int dia);
 
 
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO adm.notas (pacienteId, fechaCita, fechaCitaInicio, fechaCitaFin,estado, creado)" +
-            "VALUES (:pacienteId, :fechaCita, :fechaCitaInicio, :fechaCitaFin,1, GETDATE())", nativeQuery = true)
+    @Query(value = "INSERT INTO adm.notas (pacienteId, fechaCita, fechaCitaInicio, fechaCitaFin,estado, creado, anio,mes)" +
+            "VALUES (:pacienteId, :fechaCita, :fechaCitaInicio, :fechaCitaFin,1, GETDATE(),anio, mes)", nativeQuery = true)
     int insertCita(
             @Param("pacienteId") int pacienteId,
             @Param("fechaCita") LocalDateTime fechaCita,

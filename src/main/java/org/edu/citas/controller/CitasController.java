@@ -35,12 +35,49 @@ public class CitasController {
     @Autowired
     private Utils utils;
 
-    @GetMapping("/allCitas")
-    public ResponseEntity<?> getAllCitas() {
+    @GetMapping("/allCitas/{anio}")
+    public ResponseEntity<?> getAllCitas( @PathVariable int anio) {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
         try {
-            List<ICitasDto> citas = citasService.AllCitas();
+            List<ICitasDto> citas = citasService.AllCitas(anio);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
+            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+    @GetMapping("/citasMensuales/{anio}/{mes}")
+    public ResponseEntity<?> getCitasMensuales( @PathVariable int anio, @PathVariable int mes) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            List<ICitasDto> citas = citasService.citasMensuales(anio, mes);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
+            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+    @GetMapping("/citasDiarias/{anio}/{mes}/{dia}")
+    public ResponseEntity<?> getCitasDiarias( @PathVariable int anio, @PathVariable int mes, @PathVariable int dia) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            List<ICitasDto> citas = citasService.citasdiarias(anio, mes, dia );
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
             return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
 

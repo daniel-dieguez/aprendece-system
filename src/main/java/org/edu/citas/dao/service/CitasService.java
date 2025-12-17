@@ -18,8 +18,15 @@ public class CitasService {
     @Autowired
     private ICitasRepo citasRepo;
 
-    public List<ICitasDto> AllCitas(){
-        return this.citasRepo.AllCitas();
+    public List<ICitasDto> AllCitas(int anio){
+        return this.citasRepo.AllCitas(anio);
+    }
+
+    public List<ICitasDto> citasMensuales(int anio, int mes){
+        return this.citasRepo.CitasMensuales(anio, mes);
+    }
+    public List<ICitasDto> citasdiarias(int anio, int mes, int dia){
+        return this.citasRepo.CitasDiarias(anio, mes, dia);
     }
 
     public CitasModel createCita(CitasModel citaModal){

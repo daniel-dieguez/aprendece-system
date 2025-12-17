@@ -42,6 +42,12 @@ public class CitasModel implements Serializable {
     @JsonFormat
     private int estado;
 
+    @JoinColumn
+    private int  anio;
+
+    @JoinColumn
+    private int  mes;
+
     private LocalDate creado;
 
 
