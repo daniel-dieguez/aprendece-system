@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,8 +24,21 @@ public class CitasService {
     public List<ICitasDto> citasMensuales(int anio, int mes){
         return this.citasRepo.CitasMensuales(anio, mes);
     }
+
     public List<ICitasDto> citasdiarias(int anio, int mes, int dia){
         return this.citasRepo.CitasDiarias(anio, mes, dia);
+    }
+
+    public Long citasTotaldiarias(int anio, int mes, int dia){
+        return this.citasRepo.CitasTotalDia(anio, mes, dia);
+    }
+
+    public Long citasTotalesMensuales(int anio, int mes){
+        return this.citasRepo.CitasTotalMensuales(anio, mes);
+    }
+
+    public Long citasTotalesAnuales(int anio){
+        return this.citasRepo.CitasTotalAnuales(anio);
     }
 
     public CitasModel createCita(CitasModel citaModal){

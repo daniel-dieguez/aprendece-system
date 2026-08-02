@@ -35,14 +35,24 @@ public class CitasController {
     @Autowired
     private Utils utils;
 
+    //---- citas
+
     @GetMapping("/allCitas/{anio}")
     public ResponseEntity<?> getAllCitas( @PathVariable int anio) {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
         try {
             List<ICitasDto> citas = citasService.AllCitas(anio);
-            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
-            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas);
+
+           if(citas.isEmpty()){
+               response.put("response", 0);
+               response.put("mensaje", "No se han encontrado citas para el paciente.");
+           }
+
+            response.put("response", 1);
+           response.put("data", citas);
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -53,15 +63,27 @@ public class CitasController {
 
         }
     }
-    @GetMapping("/citasMensuales/{anio}/{mes}")
+    @GetMapping("/allCitasMensuales/{anio}/{mes}")
     public ResponseEntity<?> getCitasMensuales( @PathVariable int anio, @PathVariable int mes) {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
         try {
             List<ICitasDto> citas = citasService.citasMensuales(anio, mes);
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
-            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
 
+
+            if(citas.isEmpty()){
+                response.put("response", 0);
+                response.put("mensaje", "No se han encontrado citas  del año: {} del mes para el paciente.");
+            }
+
+            response.put("response", 1);
+            response.put("data", citas);
+            return  ResponseEntity.ok(response);
+
+
+//            return ResponseEntity.ok(response);
+//
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
@@ -72,14 +94,23 @@ public class CitasController {
         }
     }
 
-    @GetMapping("/citasDiarias/{anio}/{mes}/{dia}")
+    @GetMapping("/allCitasDiarias/{anio}/{mes}/{dia}")
     public ResponseEntity<?> getCitasDiarias( @PathVariable int anio, @PathVariable int mes, @PathVariable int dia) {
         Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
         try {
             List<ICitasDto> citas = citasService.citasdiarias(anio, mes, dia );
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", citas.size());
-            return new ResponseEntity<List<ICitasDto>>(citas, HttpStatus.OK);
+
+
+            if(citas.isEmpty()){
+                response.put("response", 0);
+                response.put("mensaje", "No se han encontrado citas  del año: {} del mes para el paciente.");
+            }
+
+            response.put("response", 1);
+            response.put("data", citas);
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -90,6 +121,105 @@ public class CitasController {
 
         }
     }
+
+
+    //esta de abajo no se para que seria sabes, aqui deeberioamos de mostras un ALL pero de listado de pacientes, nombres
+//    y datos de la cita
+    @GetMapping("/citasTotalDiarias/{anio}/{mes}/{dia}")
+    public ResponseEntity<?> getCitasTotallDiarias( @PathVariable int anio, @PathVariable int mes, @PathVariable int dia) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            Long citas = citasService.citasTotaldiarias(anio, mes, dia );
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
+
+
+            if (citas == null) {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response", 1);
+            response.put("data", citas.byteValue());
+
+            return ResponseEntity.ok(response);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+    @GetMapping("/citasTotalMensuales/{anio}/{mes}")
+    public ResponseEntity<?> getCitasTotalMensuales( @PathVariable int anio, @PathVariable int mes) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            Long citas = citasService.citasTotalesMensuales(anio, mes);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
+
+
+            if (citas == null) {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response", 1);
+            response.put("data", citas.byteValue());
+
+            return ResponseEntity.ok(response);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+    @GetMapping("/citasTotalAnual/{anio}")
+    public ResponseEntity<?> getCitasTotalAnual( @PathVariable int anio) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            Long citas = citasService.citasTotalesAnuales(anio);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
+
+
+            if (citas == null) {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response", 1);
+            response.put("data", citas.byteValue());
+
+            return ResponseEntity.ok(response);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
+
+    //creacion de nueva cita
 
     @PostMapping("/storeCita")
     public ResponseEntity<?> storeCita(@RequestBody CitasCreateDto dto) {
@@ -108,9 +238,9 @@ public class CitasController {
             cita.setCreado(LocalDate.now());
 
             CitasModel Cita = citasService.createCita(cita);
-            response.put("mensaje", "Cita creada con éxito");
+            response.put("mensaje", "Cita creada con éxito la cita");
             response.put("Cita", dto);
-            response.put("success", 1);
+            response.put("response", 1);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
 
 
@@ -127,5 +257,9 @@ public class CitasController {
 
 
     }
+
+
+
+    // Aqui va la creacion de post
 
 }

@@ -8,5 +8,7 @@ public interface InotasDto {
     Integer getEstado();
     String getNota();
     LocalDate getCreado();
+    Integer getId();
+    Integer getAnio();
 
 }

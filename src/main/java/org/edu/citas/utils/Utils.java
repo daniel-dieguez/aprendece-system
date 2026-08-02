@@ -17,6 +17,7 @@ public class Utils {
     public Map<String,Object> getTrasactionExeption(Map<String,Object> response, CannotCreateTransactionException e){
         logger.error("error al moemto de conectarse a la base de datos");
         response.put("mensaje", "error");
+        response.put("response", 0);
         response.put("error", e.getMessage().concat(":").concat((e.getMostSpecificCause().getMessage())));
         return  response;
     }
@@ -24,6 +25,7 @@ public class Utils {
     public Map<String,Object> getDataAccessException(Map<String,Object> response, DataAccessException e ){
         logger.error("eror  al moemtjo de ejecutar consulta");
         response.put("mensaje", "no se realizo bien la consulta, hay un dato que no lo esta aceptando");
+        response.put("response", 0);
         response.put("erorr", e.getMessage().concat(":".concat(e.getMostSpecificCause().getMessage())));
         return response;
     }

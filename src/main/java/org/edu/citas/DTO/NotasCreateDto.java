@@ -13,6 +13,7 @@ import lombok.Setter;
 public class NotasCreateDto {
     private Integer pacienteId;
     private String nota;
+    private int anio;
 
     public Integer getPacienteId() {
         return pacienteId;
@@ -24,6 +25,10 @@ public class NotasCreateDto {
 
     public String getNota() {
         return nota;
+    }
+
+    public int getAnio() {
+        return anio ;
     }
 
     public void setNota(String nota) {

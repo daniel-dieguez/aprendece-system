@@ -19,7 +19,16 @@ public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
             SELECT p\s
     FROM PersonaModel p
     WHERE p.estado = 1
+            """)
+    List<PersonaModel> AllPersonas (); //Este es listado para todas las personas
+
+    @Query("""
+
+            SELECT p\s
+    FROM PersonaModel p
+    WHERE p.estado = 1
       AND p.anio = :anio
+         
             """)
     List<PersonaModel> AllPacientes(@Param("anio") int anio);
 
@@ -55,15 +64,17 @@ public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO adm.Usuario (nombre, edad, correo, direccion, telefono, tipoUsuario, motivo, estado, creado) " +
-            "VALUES (:nombre, :edad, :correo, :direccion, :telefono, :tipoUsuario, motivo,1, GETDATE())", nativeQuery = true)
+    @Query(value = "INSERT INTO adm.Usuario (nombre, edad, correo,pais, direccion, telefono, tipoUsuario, motivo, estado, creado) " +
+            "VALUES (:nombre, :edad, :correo,:pais, :direccion, :telefono, :tipoUsuario, motivo,1, GETDATE())", nativeQuery = true)
     int insertarUsuario(
             @Param("nombre") String nombre,
+            @Param("pais") String pais,
             @Param("edad") Integer edad,
             @Param("correo") String correo,
             @Param("direccion") String direccion,
             @Param("telefono") String telefono,
             @Param("tipoUsuario") Integer tipoUsuario,
             @Param("motivo") String motivo);
+
 
 }

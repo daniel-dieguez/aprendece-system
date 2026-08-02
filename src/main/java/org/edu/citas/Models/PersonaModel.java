@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "Usuario", schema = "adm")
 @Getter
@@ -23,9 +24,9 @@ public class PersonaModel implements Serializable {
     @JsonFormat
     private Integer id;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     @JsonFormat
     private String nombre;
@@ -33,6 +34,8 @@ public class PersonaModel implements Serializable {
     private Integer edad;
     @JsonFormat
     private String correo;
+    @JsonFormat
+    private String pais;
     @JsonFormat
     private String direccion;
 
@@ -46,6 +49,7 @@ public class PersonaModel implements Serializable {
 
     @JsonFormat
     private Integer estado;
+
 
     @JsonFormat
     private Integer mes ;
@@ -62,7 +66,8 @@ public class PersonaModel implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoUsuario", insertable = false, updatable = false)
-    private TipoUsarioModel tipoUsuarios;
+    @JsonIgnore
+    private TipoUsuarioModel tipoUsuarios;
 
 
 

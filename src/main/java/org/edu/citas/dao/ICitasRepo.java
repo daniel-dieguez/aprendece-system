@@ -48,6 +48,36 @@ c.pacienteModel.id AS idUsuario,
 """)
     List<ICitasDto> CitasMensuales(@Param("anio") int anio, @Param("mes") int mes);
 
+    //citas totales del día
+    @Query("""
+    SELECT 
+    SUM(c.id)
+    FROM CitasModel c
+    WHERE c.anio = :anio
+    and c.mes = :mes 
+    and DAY(c.fechaCita) = :dia
+""")
+    Long CitasTotalDia( @Param("anio") int anio, @Param("mes") int mes, @Param("dia") int dia);
+
+
+    @Query("""
+    SELECT 
+    SUM(c.id)
+    FROM CitasModel c
+    WHERE c.anio = :anio
+    and c.mes = :mes 
+""")
+    Long CitasTotalMensuales( @Param("anio") int anio, @Param("mes") int mes);
+
+    @Query("""
+    SELECT 
+    SUM(c.id)
+    FROM CitasModel c
+    WHERE c.anio = :anio
+    
+""")
+    Long CitasTotalAnuales( @Param("anio") int anio);
+
     @Query("""
     SELECT 
 c.pacienteModel.id AS idUsuario,

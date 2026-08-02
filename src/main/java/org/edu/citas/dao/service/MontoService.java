@@ -1,11 +1,14 @@
 package org.edu.citas.dao.service;
 
 import org.edu.citas.DTO.IMontoDto;
+import org.edu.citas.Models.MontosModel;
+import org.edu.citas.Models.NotasModel;
 import org.edu.citas.dao.IMontoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,6 +21,10 @@ public List<IMontoDto> getMontosAnual(int anio) {
     return iMontoRepository.MontoAnual(anio);
 
 }
+    public MontosModel createMonto(MontosModel montosModel){
+    montosModel.setCreado(LocalDate.now());
+    return iMontoRepository.save(montosModel);
+    }
 
 public List<IMontoDto> getMontosMensual(int mes, int anio) {
     return iMontoRepository.MontoMensual(mes, anio);

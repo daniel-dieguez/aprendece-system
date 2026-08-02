@@ -4,7 +4,7 @@ package org.edu.citas.Login;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.edu.citas.Models.PersonaModel;
-import org.edu.citas.Models.TipoUsarioModel;
+import org.edu.citas.Models.TipoUsuarioModel;
 
 @Entity
 @Table(name = "Login", schema = "adm")

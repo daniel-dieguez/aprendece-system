@@ -1,9 +1,11 @@
 package org.edu.citas.dao;
 
+import jakarta.transaction.Transactional;
 import org.edu.citas.DTO.ICitasDto;
 import org.edu.citas.DTO.IMontoDto;
 import org.edu.citas.Models.MontosModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -86,6 +88,15 @@ public interface IMontoRepo extends JpaRepository <MontosModel, Integer>{
     Long TotalPorPersona(@Param("anio") int anio,@Param("pacienteId") int pacienteId );
 
 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO adm.montos (pacienteId, monto, estado,anio,mes, creado)" +
+            "VALUES (:pacienteId, :monto, 1,:anio,:mes, GETDATE())", nativeQuery = true)
+    int insertNota(
+            @Param("pacienteId") int pacienteId,
+            @Param("anio") int anio,
+            @Param("mes") int mes,
+            @Param("monto") float nota);
 
 
 

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface INotaRepo extends JpaRepository<NotasModel, Integer> {
@@ -26,13 +27,49 @@ public interface INotaRepo extends JpaRepository<NotasModel, Integer> {
 """)
     List<InotasDto> AllNotas();
 
+    /// ----- create
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO adm.notas (pacienteId, nota, estado, creado)" +
-            "VALUES (:pacienteId, :nota, 1, GETDATE())", nativeQuery = true)
+    @Query(value = "INSERT INTO adm.notas (pacienteId, nota, estado,anio, creado)" +
+            "VALUES (:pacienteId, :nota, 1,:anio, GETDATE())", nativeQuery = true)
     int insertNota(
             @Param("pacienteId") int pacienteId,
+            @Param("anio") int anio,
             @Param("nota") String nota);
+
+
+    //--- One nota x persona
+    @Query("""
+SELECT n.id as id,
+               n.pacienteModel.id AS idUsuario,
+               
+               n.pacienteModel.nombre AS nombre,
+               n.estado AS estado,
+               n.nota AS nota,
+               n.creado AS creado
+        FROM NotasModel n
+
+WHERE n.pacienteModel.id = :pacienteId
+""")
+    Optional<InotasDto> oneNotasXPersona(@Param("pacienteId") int pacienteId);
+
+
+    //-- oneOneNota
+    @Query("""
+SELECT n.id as id,
+               n.pacienteModel.id AS idUsuario,
+               
+               n.pacienteModel.nombre AS nombre,
+               n.estado AS estado,
+               n.nota AS nota,
+               n.creado AS creado
+        FROM NotasModel n
+
+WHERE n.id = :id
+""")
+    Optional<InotasDto> oneNotas(@Param("id") int id);
+
+
 
 
 }

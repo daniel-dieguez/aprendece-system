@@ -31,6 +31,39 @@ public class PersonaController {
     @Autowired
     private Utils utils;
 
+    @GetMapping("/AllPacientes")
+    public ResponseEntity<?> getAllPaciente() {
+        Map<String, Object> response = new HashMap<>();
+        logger.debug("Iniciando consulta");
+
+        try {
+            List<PersonaModel> pacientes = personaService.AllP();
+
+            logger.info("Consulta realizada correctamente. Registros encontrados: {}", pacientes.size());
+
+            if(pacientes.isEmpty())
+            {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response",1);
+            response.put("data", pacientes);
+
+            return  ResponseEntity.ok(response);
+
+        } catch (CannotCreateTransactionException e) {
+            response = utils.getTrasactionExeption(response, e);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+
+        } catch (DataAccessException e) {
+            response = utils.getDataAccessException(response, e);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+        }
+    }
+
     @GetMapping("/pacientes/{anio}")
     public ResponseEntity<?> getAllPersonas(@PathVariable int anio) {
                 Map<String, Object> response = new HashMap<>();
@@ -39,7 +72,18 @@ public class PersonaController {
         try {
             List<PersonaModel> pacientes = personaService.AllPacientes(anio);
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
-            return new ResponseEntity<List<PersonaModel>>(pacientes, HttpStatus.OK);
+            if(pacientes.isEmpty())
+            {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response",1);
+            response.put("data", pacientes);
+
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -59,7 +103,18 @@ public class PersonaController {
         try {
             List<PersonaModel> pacientes = personaService.pacientePormes(anio, mes);
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
-            return new ResponseEntity<List<PersonaModel>>(pacientes, HttpStatus.OK);
+            if(pacientes.isEmpty())
+            {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response",1);
+            response.put("data", pacientes);
+
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -70,6 +125,9 @@ public class PersonaController {
 
         }
     }
+
+
+    //totales de pacientes
     @GetMapping("/totalPacientes/{anio}")
     public ResponseEntity<?> totalAnuales(@PathVariable int anio) {
                 Map<String, Object> response = new HashMap<>();
@@ -78,7 +136,19 @@ public class PersonaController {
         try {
             Long pacientes = personaService.totalPacientesAnual(anio);
             logger.info("Se ha realizado consulta correctamente, total encontrados: {}", pacientes);
-            return ResponseEntity.ok(pacientes);
+
+            if(pacientes == null)
+            {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response",1);
+            response.put("data", pacientes.byteValue());
+
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -89,6 +159,8 @@ public class PersonaController {
 
         }
     }
+
+
 
     @GetMapping("/totalMensual/{anio}/{mes}")
     public ResponseEntity<?> totalMensualAnual(@PathVariable int anio, @PathVariable int mes) {
@@ -98,7 +170,18 @@ public class PersonaController {
         try {
            Long pacientes = personaService.totalPacientesMensual(anio, mes);
             logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
-            return ResponseEntity.ok(pacientes);
+            if(pacientes == null)
+            {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response",1);
+            response.put("data", pacientes.byteValue());
+
+            return  ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
             response = this.utils.getTrasactionExeption(response, e);
@@ -109,6 +192,8 @@ public class PersonaController {
 
         }
     }
+
+    //--------------------------------------------------------------------------------------
 
     @PostMapping("/newUsuario")
     public ResponseEntity<?> newUsuario(@RequestBody PersonaModel persona) {
@@ -119,9 +204,13 @@ public class PersonaController {
 
             persona.setCreado(LocalDate.now());
             PersonaModel nuevoUsuario = personaService.crearPersona(persona);
-            response.put("mensaje", "Usuario creado con éxito");
+
+
+
+
+            response.put("mensaje", "Paciente creado con éxito");
             response.put("usuario", nuevoUsuario);
-            response.put("success", 1);
+            response.put("response", 1);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
 
         } catch (CannotCreateTransactionException e) {

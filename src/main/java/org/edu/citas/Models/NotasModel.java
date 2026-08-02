@@ -42,8 +42,17 @@ public class NotasModel  implements Serializable {
         this.estado = estado;
     }
 
+    public void setAnio(int anio) {
+        this.anio = estado;
+    }
+
     @JsonFormat
     private String nota;
+
+    @JsonFormat
+    private int anio;
+
+
 
     @JsonFormat
     private int estado;
