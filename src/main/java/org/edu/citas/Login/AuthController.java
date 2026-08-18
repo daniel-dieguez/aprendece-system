@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 //@CrossOrigin(origins = "http://localhost:3000")
@@ -24,20 +25,11 @@ public class AuthController {
 
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private ILoginRepo iLoginRepo;
 
-   /* @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        String token = jwtUtils.generateToken(request.getUsername());
-        // Construir respuesta con username y token
-        JwtResponse jwtResponse = new JwtResponse(request.getUsername(),token);
-        JwtResponse jwtName = new JwtResponse(request.getUsername(),token);
 
-        return ResponseEntity.ok(jwtResponse);
-    }*/
-   @PostMapping("/login")
+    @PostMapping("/login")
    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
        // Validación básica
@@ -55,11 +47,24 @@ public class AuthController {
                    )
            );
 
+           LoginModel login = iLoginRepo
+                   .findByUsernameWithUsuarioAndTipoUsuario(
+                           request.getUsername()
+                   )
+                   .orElseThrow(() ->
+                           new UsernameNotFoundException(
+                                   "Usuario no encontrado"
+                           )
+                   );
+
            String token = jwtUtils.generateToken(authentication.getName());
 
            JwtResponse response = new JwtResponse(
                    authentication.getName(),
-                   token
+                   token,
+
+                   login.getTipoUsuario()
+
            );
 
            return ResponseEntity.ok(response);

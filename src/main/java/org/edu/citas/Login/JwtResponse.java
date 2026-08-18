@@ -36,15 +36,20 @@ public class JwtResponse {
         this.nameTipo = nameTipo;
     }
 
-    public JwtResponse(String username, String token) {
+    public JwtResponse(String username, String token, int tipoUsuario) {
         this.username = username;
         this.token = token;
+        this.tipoUsuario = tipoUsuario;
     }
 
     // getters y setters
     public String getUsername() {
         return username;
     }
+
+//    public int getTipoUsuario (){
+//        return tipoUsuario
+//    }
 
     public void setUsername(String username) {
         this.username = username;

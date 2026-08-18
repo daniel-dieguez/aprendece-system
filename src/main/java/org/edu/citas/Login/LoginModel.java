@@ -18,6 +18,9 @@ public class LoginModel {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "tipoUsuario")
+    private int tipoUsuario;
+
     @Column(name = "passwordHash")
     private String passwordHash;
 
@@ -29,17 +32,12 @@ public class LoginModel {
     private PersonaModel usuario;
 
 
-//
-//    @ManyToOne(fetch = FetchType.LAZY) // o EAGER si quieres cargar automáticamente
-//    @JoinColumn(name = "tipoUsuarioId")
-//    private TipoUsarioModel tipoUsarioModel;
 
-
-
-    public LoginModel(Integer id, String username, String passwordHash) {
+    public LoginModel(Integer id, String username, String passwordHash, int tipoUsuario) {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public LoginModel() {
@@ -68,6 +66,14 @@ public class LoginModel {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public int setTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
 

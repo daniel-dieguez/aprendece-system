@@ -4,6 +4,17 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
+
+
+
+    public int getTipoUsuario(){
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -22,4 +33,6 @@ public class LoginRequest {
 
     private String username;
         private String password;
+
+        private int tipoUsuario;
     }

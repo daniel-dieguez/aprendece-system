@@ -10,11 +10,13 @@ import java.util.Optional;
 @Repository
 public interface ILoginRepo extends JpaRepository<LoginModel, Integer> {
 
-//    Optional<LoginModel> findByUsername(String username);
-@Query("SELECT l FROM LoginModel l " +
-        "JOIN FETCH l.usuario u " +
-        "JOIN FETCH u.tipoUsuarios " +
-        "WHERE l.username = :username")
+
+    @Query("""
+        SELECT l
+        FROM LoginModel l
+        JOIN FETCH l.usuario u
+        WHERE l.username = :username
+    """)
 Optional<LoginModel> findByUsernameWithUsuarioAndTipoUsuario(@Param("username") String username);
 
 
