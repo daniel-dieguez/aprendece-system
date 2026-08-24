@@ -29,6 +29,10 @@ public class CitasService {
         return this.citasRepo.CitasDiarias(anio, mes, dia);
     }
 
+    public Long totalcitasdiarias(int anio, int mes, int dia){
+        return this.citasRepo.TotalPacientesDiarioss(anio, mes, dia);
+    }
+
     public Long citasTotaldiarias(int anio, int mes, int dia){
         return this.citasRepo.CitasTotalDia(anio, mes, dia);
     }

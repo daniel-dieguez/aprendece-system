@@ -183,7 +183,7 @@ public class MontoController {
             }
 
             response.put("response",1);
-            response.put("data", montos.byteValue());
+            response.put("data", montos);
 
             return  ResponseEntity.ok(response);
 

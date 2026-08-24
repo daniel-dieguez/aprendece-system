@@ -80,6 +80,7 @@ c.pacienteModel.id AS idUsuario,
 
     @Query("""
     SELECT 
+    c.id as id,
 c.pacienteModel.id AS idUsuario,
         c.pacienteModel.nombre AS nombre,
         c.fechaCita AS fechaCita,
@@ -94,6 +95,19 @@ c.pacienteModel.id AS idUsuario,
     and DAY(c.fechaCita) = :dia
 """)
     List<ICitasDto> CitasDiarias(@Param("anio") int anio, @Param("mes") int mes, @Param("dia") int dia);
+
+    @Query("""
+
+            SELECT COUNT(c.id)
+            FROM CitasModel c
+               
+    WHERE c.estado = 1
+      AND year (c.fechaCita) = :anio
+          and month (c.fechaCita) = :mes
+    and DAY(c.fechaCita) = :dia
+     
+            """)
+    Long TotalPacientesDiarioss(@Param("anio") int anio, @Param("mes") int mes, @Param("dia") int dia);
 
 
 

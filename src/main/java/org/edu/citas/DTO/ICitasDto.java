@@ -14,4 +14,5 @@ public interface ICitasDto {
     Integer getEstado();
     Integer getAnio();
     Integer getMes();
+    Integer getId();
 }

@@ -218,6 +218,37 @@ public class CitasController {
         }
     }
 
+    @GetMapping("/citasTotalDiario/{anio}/{mes}/{dia}")
+    public ResponseEntity<?> getCitasTotalDiaario( @PathVariable int anio, @PathVariable int mes, @PathVariable int dia) {
+        Map<String, Object> response = new HashMap<>();
+        this.logger.debug("iniciando consulta");
+        try {
+            Long citas = citasService.totalcitasdiarias(anio, mes, dia);
+            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}");
+
+
+            if (citas == null) {
+                response.put("response", 0);
+                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("response", 1);
+            response.put("data", citas.byteValue());
+
+            return ResponseEntity.ok(response);
+
+        } catch (CannotCreateTransactionException e) {
+            response = this.utils.getTrasactionExeption(response, e);
+            return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (DataAccessException e) {
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
+
+        }
+    }
+
 
     //creacion de nueva cita
 

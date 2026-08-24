@@ -48,6 +48,9 @@ public class CitasModel implements Serializable {
     @JoinColumn
     private int  mes;
 
+    @JoinColumn
+    private int  dia;
+
     private LocalDate creado;
 
 

@@ -95,7 +95,7 @@ public class PersonaController {
         }
     }
 
-    @GetMapping("/pacientes/{anio}/{mes}")
+    @GetMapping("/pacientess/{anio}/{mes}")
     public ResponseEntity<?> getAllPersonasAnualYMensual(@PathVariable int anio, @PathVariable int mes) {
                 Map<String, Object> response = new HashMap<>();
         this.logger.debug("iniciando consulta");
