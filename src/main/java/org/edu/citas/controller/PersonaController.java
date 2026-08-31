@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -64,34 +65,49 @@ public class PersonaController {
         }
     }
 
-    @GetMapping("/pacientes/{anio}")
-    public ResponseEntity<?> getAllPersonas(@PathVariable int anio) {
-                Map<String, Object> response = new HashMap<>();
+    @GetMapping("/listPersona/{anio}/{page}")
+    public ResponseEntity<?> getAllPersonas(
+            @PathVariable int anio,
+            @RequestParam(defaultValue = "0") int page) {
+
+        Map<String, Object> response = new HashMap<>();
+
         this.logger.debug("iniciando consulta");
 
         try {
-            List<PersonaModel> pacientes = personaService.AllPacientes(anio);
-            logger.info("Se ha realizado consulta correctamente, registros encontrados: {}", pacientes.size());
-            if(pacientes.isEmpty())
-            {
+
+            List<PersonaModel> pacientes = personaService.AllPacientes(anio, page);
+
+            logger.info(
+                    "Se ha realizado consulta correctamente, registros encontrados: {}",
+                    pacientes.size()
+            );
+
+            if (pacientes.isEmpty()) {
                 response.put("response", 0);
-                response.put("mensaje", "No se encontró ninguna nota para el paciente.");
+                response.put("mensaje", "No se encontraron pacientes.");
 
                 return ResponseEntity.ok(response);
             }
 
-            response.put("response",1);
+            response.put("response", 1);
             response.put("data", pacientes);
+            response.put("page", page);
 
-            return  ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
 
         } catch (CannotCreateTransactionException e) {
+
             response = this.utils.getTrasactionExeption(response, e);
             return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (DataAccessException e) {
-            response = this.utils.getDataAccessException(response, e);
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.SERVICE_UNAVAILABLE);
 
+        } catch (DataAccessException e) {
+
+            response = this.utils.getDataAccessException(response, e);
+            return new ResponseEntity<Map<String, Object>>(
+                    response,
+                    HttpStatus.SERVICE_UNAVAILABLE
+            );
         }
     }
 

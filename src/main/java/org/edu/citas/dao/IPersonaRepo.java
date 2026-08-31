@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+//import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Repository
@@ -23,14 +25,16 @@ public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
     List<PersonaModel> AllPersonas (); //Este es listado para todas las personas
 
     @Query("""
-
-            SELECT p\s
+    SELECT p
     FROM PersonaModel p
-    WHERE p.estado = 1
-      AND p.anio = :anio
-         
-            """)
-    List<PersonaModel> AllPacientes(@Param("anio") int anio);
+    WHERE p.anio = :anio
+      AND p.id NOT IN (1, 2)
+    ORDER BY p.id
+""")
+    List<PersonaModel> AllPacientes(
+            @Param("anio") int anio,
+            Pageable pageable
+    );
 
     @Query("""
 
@@ -57,7 +61,8 @@ public interface IPersonaRepo extends JpaRepository<PersonaModel, Integer> {
             SELECT COUNT(p.id)
             FROM PersonaModel p
     WHERE p.estado = 1
-      AND p.anio = :anio
+      AND
+           p.anio = :anio
       and p.mes = :mes
             """)
     Long totalPacientesMesual(@Param("anio") int anio, @Param("mes") int mes);

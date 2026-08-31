@@ -93,6 +93,8 @@ c.pacienteModel.id AS idUsuario,
     WHERE c.anio = :anio
     and c.mes = :mes 
     and DAY(c.fechaCita) = :dia
+    order by horaCitaInicio desc
+    
 """)
     List<ICitasDto> CitasDiarias(@Param("anio") int anio, @Param("mes") int mes, @Param("dia") int dia);
 
@@ -101,7 +103,7 @@ c.pacienteModel.id AS idUsuario,
             SELECT COUNT(c.id)
             FROM CitasModel c
                
-    WHERE c.estado = 1
+    WHERE c.estado in (1,2)
       AND year (c.fechaCita) = :anio
           and month (c.fechaCita) = :mes
     and DAY(c.fechaCita) = :dia

@@ -51,6 +51,8 @@ public class CitasModel implements Serializable {
     @JoinColumn
     private int  dia;
 
+
+
     private LocalDate creado;
 
 
@@ -81,4 +83,8 @@ public class CitasModel implements Serializable {
     public void setCreado(LocalDate creado) {
         this.creado = creado;
     }
+
+//    public void setEstado(int estado) {
+//        this.estado= estado;
+//    }
 }
